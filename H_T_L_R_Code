@@ -1,0 +1,39 @@
+#include <Wire.h>
+#include <AP3216_WE.h>
+#include <ClosedCube_HDC1080.h>
+
+AP3216_WE myAP3216 = AP3216_WE();
+ClosedCube_HDC1080 sensor;
+
+void setup() {
+  Serial.begin(9600);
+  Wire.begin();
+  myAP3216.init();
+  myAP3216.setMode(AP3216_ALS); // Uncomment and adjust if needed 
+  myAP3216.setLuxRange(RANGE_20661);
+  delay(1000); // without delay the first values will be zero
+
+  sensor.begin(0x40);
+}
+
+void loop() {
+  
+  float als = myAP3216.getAmbientLight();
+  
+  Serial.print("Lux: "); Serial.println(als);
+
+  double temperatura = 0;
+  double humedad = 0;
+
+  for(int i=0;i<20;i++){
+    temperatura = temperatura + sensor.readTemperature();
+    humedad = humedad + sensor.readHumidity();
+  }
+  
+  Serial.print("Temperatura = ");
+  Serial.print(temperatura/20);
+  Serial.print(" °C Humedad ");
+  Serial.print(humedad/20);
+  Serial.println("%");
+  delay(1000);
+}
