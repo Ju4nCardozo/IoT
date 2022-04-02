@@ -73,7 +73,7 @@ def sensor_send():
 
     data["checksum"] = data["checksum"][0:len(data["checksum"])-1] #Se elimina el ultimo caracter al valor de la llave data["checksum"] ya que no se requiere
 
-    res = str_xor(datahash,key) #Se decodifica el datahash con la operación XOR y obtener el string de los bytes del mensaje
+    res = str_xor(datahash,key) #Se codifica el datahash con la operación XOR y obtener el string de los bytes del mensaje
     decode = ":".join("{:02x}".format(ord(c)) for c in res) #Se le da formato hexadecimal al resultado de la operación anterior
 
     if(decode.strip() == data["checksum"].strip()): #Se compara el resultado del checksum con el anterior para validar el no repudio e integridad de los datos, si es válido se insertan los datos a la bd, en caso contrario los rechaza
