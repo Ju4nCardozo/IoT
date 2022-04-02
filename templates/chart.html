@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <title>Graficas</title>
+  <script src='static/Chart.min.js'></script>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css"
+    integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"
+    integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T"
+    crossorigin="anonymous"></script>
+  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js">
+  </script>
+  <script type="text/javascript" src="https://www.google.com/jsapi">
+  </script>
+  <script type="text/javascript">
+    google.charts.load('current', { packages: ['map'] });     
+  </script>
+</head>
+
+<body>
+  <div class="container">
+    <h1>Gráfica Simple de una variable</h1>
+    <canvas id="myChart1" width="600" height="400"></canvas>
+    <canvas id="myChart2" width="600" height="400"></canvas>
+    <div id = "container" style = "width: 550px; height: 400px; margin: 0 auto"></div>
+    <table>
+      <tr>
+        <td>
+          <p class="lead"></p>
+          <p><a class="btn btn-lg btn-success" href="/" role="button">Volver</a>
+        </td>
+        <td>
+          <p class="lead"></p>
+          <p><a class="btn btn-lg btn-success" href="visualizacion" role="button">Actualizar</a>
+        </td>
+      </tr>
+    </table>
+  </div>
+  <script>
+    // Global parameters:
+    // do not resize the chart canvas when its container does (keep at 600x400px)
+    Chart.defaults.global.responsive = false;
+
+    // define the chart data
+    var chartData1 = {
+      labels: [{% for item in labels %}
+    "{{item}}",
+      {% endfor %}],
+    datasets: [
+      {
+        label: '{{ legend[1] }}',
+        fill: true,
+        lineTension: 0.1,
+        backgroundColor: "rgba(75,192,192,0.4)",
+        borderColor: "rgba(75,192,192,1)",
+        borderCapStyle: 'butt',
+        borderDash: [],
+        borderDashOffset: 0.0,
+        borderJoinStyle: 'miter',
+        pointBorderColor: "rgba(75,192,192,1)",
+        pointBackgroundColor: "#fff",
+        pointBorderWidth: 1,
+        pointHoverRadius: 5,
+        pointHoverBackgroundColor: "rgba(75,192,192,1)",
+        pointHoverBorderColor: "rgba(220,220,220,1)",
+        pointHoverBorderWidth: 2,
+        pointRadius: 1,
+        pointHitRadius: 10,
+        data: [{% for item in humedades %}
+                    {{ item }},
+      {% endfor %}],
+      spanGaps: false
+        }
+      ]
+    }
+
+    var chartData2 = {
+      labels: [{% for item in labels %}
+    "{{item}}",
+      {% endfor %}],
+    datasets: [
+      {
+        label: '{{ legend[0] }}',
+        fill: true,
+        lineTension: 0.1,
+        backgroundColor: "rgba(75,192,192,0.4)",
+        borderColor: "rgba(75,192,192,1)",
+        borderCapStyle: 'butt',
+        borderDash: [],
+        borderDashOffset: 0.0,
+        borderJoinStyle: 'miter',
+        pointBorderColor: "rgba(75,192,192,1)",
+        pointBackgroundColor: "#fff",
+        pointBorderWidth: 1,
+        pointHoverRadius: 5,
+        pointHoverBackgroundColor: "rgba(75,192,192,1)",
+        pointHoverBorderColor: "rgba(220,220,220,1)",
+        pointHoverBorderWidth: 2,
+        pointRadius: 1,
+        pointHitRadius: 10,
+        data: [{% for item in temperaturas %}
+                    {{ item }},
+      {% endfor %}],
+      spanGaps: false
+        }
+      ]
+    }
+
+    // get chart canvas
+    var ctx1 = document.getElementById("myChart1").getContext("2d");
+    var ctx2 = document.getElementById("myChart2").getContext("2d");
+
+    // create the chart using the chart canvas
+    var myChart1 = new Chart(ctx1, {
+      type: 'line',
+      data: chartData1,
+    });
+    var myChart2 = new Chart(ctx2, {
+      type: 'line',
+      data: chartData2,
+    });
+
+    function drawChart() {
+      // Define the chart to be drawn.
+      var data = google.visualization.arrayToDataTable([
+        ['Lat', 'Long'],
+        [6.175073147, -75.57913971],
+        [6.175073147, -75.57913971],
+        [6.175073147, -75.57913971]
+      ]);
+
+      // Set chart options
+      var options = { showTip: true };
+
+      // Instantiate and draw the chart.
+      var chart = new google.visualization.Map(document.getElementById
+        ('container'));
+      chart.draw(data, options);
+    }
+    google.charts.setOnLoadCallback(drawChart);
+  </script>
+
+</body>
+
+</html>
