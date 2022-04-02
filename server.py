@@ -69,7 +69,7 @@ def sensor_send():
     key = "-/-///-//-" #Llave para desencriptar XOR
     data = request.get_json() #Se obtienen los datos del end device
     valuesconverted = json.loads(data["data"]) #Se convierten el mensaje a JSON
-    datahash = hashlib.sha1(data[("data")].encode('utf-8')).hexdigest() #Se decodifican los datos con el algoritmo sha1()
+    datahash = hashlib.sha1(data[("data")].encode('utf-8')).hexdigest() #Se codifican los datos con el algoritmo sha1()
 
     data["checksum"] = data["checksum"][0:len(data["checksum"])-1] #Se elimina el ultimo caracter al valor de la llave data["checksum"] ya que no se requiere
 
